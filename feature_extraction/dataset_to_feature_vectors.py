@@ -7,14 +7,14 @@ import os
 # --- exercise view map ---
 
 EXERCISE_VIEW_MAP = {
-    "pushup": "front",
-    "squat": "front",
-    "situp": "front",
-    "plank": "front",
-    "jumping_jacks": "front",
-    "bicep_curls": "front",
-    "shoulder_press": "front",
-    "lateral_raise": "front"
+    "pushup": "side",
+    "squat": "side",
+    "situp": "side",
+    "plank": "side",
+    "jumping_jacks": "side",
+    "bicep_curls": "side",
+    "shoulder_press": "side",
+    "lateral_raise": "side"
 }
 
 # --- load the data ---
@@ -44,7 +44,7 @@ for pose_name, group in data.groupby("pose"):
         
         # define a view of camera
         base_exercise = pose_name.split("_")[0].lower()
-        view = EXERCISE_VIEW_MAP.get(base_exercise, "front")
+        view = EXERCISE_VIEW_MAP.get(base_exercise, "auto")
 
         # extract the features
         feat_vector, _ = extractor.build_feature_vector(points, view=view)
