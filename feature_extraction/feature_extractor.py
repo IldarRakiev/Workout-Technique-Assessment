@@ -192,8 +192,8 @@ class FeatureExtractor:
         "Extracts arm lift angles for both left and right sides"
         features = {}
 
-        features['left_arm_lift_angle'] = self.left_arm_lift_angle(self, points)
-        features['right_arm_lift_angle'] = self.right_arm_lift_angle(self, points)
+        features['left_arm_lift_angle'] = self.left_arm_lift_angle(points)
+        features['right_arm_lift_angle'] = self.right_arm_lift_angle(points)
 
         return features
 
