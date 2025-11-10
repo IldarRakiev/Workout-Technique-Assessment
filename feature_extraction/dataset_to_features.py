@@ -34,7 +34,7 @@ for _, row in tqdm(df.iterrows(), total=len(df)):
     coords = np.array(coords)
 
     # we extract features here
-    _ , features = extractor.build_feature_vector(coords, 'front')
+    _ , features = extractor.build_feature_vector(coords, 'auto')
     features_list.append(features)
     labels_list.append(row["pose"])
 

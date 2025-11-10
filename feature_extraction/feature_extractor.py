@@ -226,6 +226,48 @@ class FeatureExtractor:
                                                          points[self.KEYPOINTS['left_knee']])
         return features
 
+
+    # ===============================
+    # Camera view detection
+    # ===============================
+    def detect_view(self, points):
+        """
+        Auto-detects if pose is viewed from 'front' or 'side'.
+        Uses combination of shoulder/hip symmetry, torso angle, and leg X displacement.
+        """
+        left_shoulder = points[self.KEYPOINTS['left_shoulder']]
+        right_shoulder = points[self.KEYPOINTS['right_shoulder']]
+        left_hip = points[self.KEYPOINTS['left_hip']]
+        right_hip = points[self.KEYPOINTS['right_hip']]
+        left_knee = points[self.KEYPOINTS['left_knee']]
+        right_knee = points[self.KEYPOINTS['right_knee']]
+
+        # 1. Shoulder-hip horizontal symmetry
+        center_x = (left_hip[0] + right_hip[0]) / 2
+        shoulder_sym = abs(left_shoulder[0] - (2 * center_x - right_shoulder[0]))
+        hip_sym = abs(left_hip[0] - (2 * center_x - right_hip[0]))
+        symmetry_score = (shoulder_sym + hip_sym) / 2
+
+        # 2. Torso orientation in XY plane
+        neck = self.midpoint(left_shoulder, right_shoulder)
+        mid_hip = self.midpoint(left_hip, right_hip)
+        torso_vec = np.array(neck) - np.array(mid_hip)
+        torso_angle_xy = np.degrees(np.arctan2(torso_vec[0], -torso_vec[1]))  # approx horizontal tilt
+
+        # 3. Legs X displacement
+        leg_dx = abs((left_knee[0] - right_knee[0]) - (left_hip[0] - right_hip[0]))
+
+        # Combine scores
+        score = symmetry_score + abs(torso_angle_xy) + leg_dx
+
+        # Threshold empirically (можно подстраивать)
+        if score < 0.15:
+            return "front"
+        else:
+            return "side"
+
+
+
     # ===============================
     # Unified feature builder
     # ===============================
@@ -238,6 +280,9 @@ class FeatureExtractor:
         """
         points = self.normalize_pose(points)
         features = {}
+
+        if view == "auto":
+            view = self.detect_view(points)
 
         # universal features
         features.update(self.extract_joint_angles(points))
@@ -253,7 +298,7 @@ class FeatureExtractor:
             features.update(self.extract_side_arm_leg_angles(points))
             features.update(self.extract_side_motion_features(points))
         else:
-            raise ValueError("Invalid view type. Use 'front' or 'side'.")
+            raise ValueError("Invalid view type. Use 'front' or 'side' or 'auto'.")
 
-        feature_vector = np.array(list(features.values()))
+        feature_vector = np.array([v for k, v in features.items() if k != 'detected_view'])
         return feature_vector, features
