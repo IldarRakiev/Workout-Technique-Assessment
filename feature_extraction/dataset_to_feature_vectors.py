@@ -58,7 +58,7 @@ for k, v in exercise_features.items():
     print(f"{k}: {v.shape}")
 
 # --- Save the result ---
-output_dir = "feature_vectors"
+output_dir = "../feature_vectors"
 os.makedirs(output_dir, exist_ok=True)
 
 output_path = os.path.join(output_dir, "feature_vectors.pkl")
