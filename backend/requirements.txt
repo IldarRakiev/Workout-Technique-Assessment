@@ -1,0 +1,14 @@
+# Core backend framework
+fastapi
+uvicorn[standard]
+
+# Video and pose processing
+mediapipe
+opencv-python
+python-multipart
+
+# Math and scientific stack
+numpy
+scipy
+pandas
+
