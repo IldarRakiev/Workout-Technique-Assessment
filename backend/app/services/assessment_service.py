@@ -2,9 +2,9 @@ import os
 import numpy as np
 from fastapi import UploadFile
 import tempfile
-from app.services.mediapipe_extractor import extract_landmarks_from_video
-from app.models.feature_extractor import FeatureExtractor
-from app.models.estimator import ExerciseEvaluator
+from services.mediapipe_extractor import extract_landmarks_from_video
+from models.feature_extractor import FeatureExtractor
+from models.estimator import ExerciseEvaluator
 # from app.ml.autoencoder_validator import AutoencoderValidator  # will be added later
 
 class AssessmentService:
@@ -41,6 +41,9 @@ class AssessmentService:
         # === STEP 1: Extract pose landmarks ===
         print("Extracting landmarks from video...")
         landmarks_array = extract_landmarks_from_video(video_path)
+        print(type(landmarks_array))
+        print("ss")
+        print(f"landmarks_array shape: {None if landmarks_array is None else len(landmarks_array)}")
         if landmarks_array is None or len(landmarks_array) == 0:
             return {"error": "No pose detected in video."}
 
@@ -48,8 +51,9 @@ class AssessmentService:
         print("Building feature sequence...")
         feature_sequence = []
         for frame_data in landmarks_array:
-            coords = frame_data.reshape(-1, 4)[:, :3]  # only x,y,z
-            _, feat_dict = self.extractor.build_feature_vector(coords, view="auto")
+            print(type(frame_data))
+            print(frame_data.shape)
+            _, feat_dict = self.extractor.build_feature_vector(frame_data, view="auto")
             feature_sequence.append(feat_dict)
 
         # === STEP 3: Rule-based evaluation ===

@@ -106,14 +106,3 @@ def extract_landmarks_from_video(video_path, draw=False, sample_rate=1):
     print(f"\nDone: {len(landmarks_sequence)} frames processed, "
           f"{detected_frames} with detected pose landmarks.")
     return landmarks_sequence
-
-
-# === Example usage ===
-if __name__ == "__main__":
-    path = "test_video.mp4"
-    print(f"Processing: {path}")
-    landmarks_seq = extract_landmarks_from_video(path, draw=False, sample_rate=2)
-
-    print(f"\nExtracted {len(landmarks_seq)} frames.")
-    print(f"Shape of one frame: {landmarks_seq[0].shape if len(landmarks_seq) > 0 else 'N/A'}")
-    print(f"Example frame:\n{landmarks_seq[0][:5]}")  # Print first 5 landmarks

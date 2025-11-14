@@ -1,7 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app import app as core_app
-from app.routes import assessment, health
+from routes import assessment, health
+
+core_app = FastAPI(
+    title="Workout Technique Assessment API",
+    description="Backend API for video-based exercise analysis using rule-based evaluation and autoencoder models.",
+    version="1.0.0"
+)
 
 # --- CORS ---
 core_app.add_middleware(

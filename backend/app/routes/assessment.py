@@ -1,11 +1,11 @@
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException
 from fastapi.responses import JSONResponse
-from app.services.assessment_service import AssessmentService
+from services.assessment_service import AssessmentService
 
 router = APIRouter(
-    prefix="/assess",
+    prefix="/assessment",
     tags=["Assessment"],
-    responses={404: {"description": "Not found"}}
+    responses={404: {"description": "Not allowed"}}
 )
 
 @router.post("/")

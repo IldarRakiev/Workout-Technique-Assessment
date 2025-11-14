@@ -2,13 +2,14 @@ version: "3.9"
 
 services:
   backend:
-    build: 
-      context: .
+    build:
+      context: ./app
       dockerfile: Dockerfile
-    container_name: workout_assessmant_backend
+    container_name: workout_assessment_backend
     ports:
       - "8000:8000"
-    volumes:
-      - .:/app
     environment:
       - PYTHONUNBUFFERED=1
+    volumes:
+      - ./app:/app
+    restart: unless-stopped
