@@ -1,12 +1,71 @@
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { assessVideo } from "../api/assessmentApi"
+import "../TechniqueAssessment.css"
 
 export default function UploadForm({ onResult }) {
   const [file, setFile] = useState(null)
   const [exercise, setExercise] = useState("pushup")
+  const [preview, setPreview] = useState(null)
+  const [dragActive, setDragActive] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  const handleSubmit = async (e) => {
+  const inputRef = useRef()
+
+  const allowedVideoTypes = [
+    "video/mp4",
+    "video/quicktime",   // .mov
+    "video/webm",
+    "video/x-matroska"   // .mkv
+  ]
+
+  const exerciseOptions = [
+    { id: "pushup", label: "Push-up", icon: "💪" },
+    { id: "pullup", label: "Pull-up", icon: "🏋️" },
+    { id: "squat", label: "Squat", icon: "🦵" },
+    { id: "situp", label: "Sit-up", icon: "🤸" },
+    { id: "jumping_jack", label: "Jumping Jack", icon: "⚡" }
+  ];
+
+  const handleDrag = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true)
+    } else if (e.type === "dragleave") {
+      setDragActive(false)
+    }
+  }
+
+  const handleDrop = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setDragActive(false)
+
+    if (e.dataTransfer.files?.[0]) {
+      setFile(e.dataTransfer.files[0])
+    }
+  }
+
+  const handleChange = (e) => {
+    if (e.target.files?.[0]) {
+
+      if (!allowedVideoTypes.includes(e.target.files?.[0].type)) {
+        alert("Unsupported format. Allowed: MP4, MOV, WEBM, MKV.")
+        return
+      }
+
+      setFile(e.target.files[0])
+      setPreview(URL.createObjectURL(e.target.files[0]))
+    }
+  }
+
+  const removeFile = () => {
+    setFile(null)
+    setPreview(null)
+    if (inputRef.current) inputRef.current.value = ""
+  }
+
+  const handleUpload = async (e) => {
     e.preventDefault()
     if (!file) return
 
@@ -21,31 +80,87 @@ export default function UploadForm({ onResult }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} style={{ marginBottom: "20px" }}>
-      <h2>Upload your workout video</h2>
+    <div className="upload-card">
+      <h3 className="upload-title">Select an exercise:</h3>
 
-      <div>
-        <label>Exercise type:</label>
-        <select value={exercise} onChange={(e) => setExercise(e.target.value)}>
-          <option value="pushup">Push-up</option>
-          <option value="pullup">Pull-up</option>
-          <option value="squat">Squat</option>
-          <option value="situp">Sit-up</option>
-          <option value="jumping_jack">Jumping Jack</option>
-        </select>
+      <div className="exercise-select">
+        <div className="exercise-grid">
+          {exerciseOptions.map((ex) => (
+            <div
+              key={ex.id}
+              className={`exercise-card ${exercise === ex.id ? "selected" : ""}`}
+              onClick={() => setExercise(ex.id)}
+            >
+              <div className="exercise-icon">{ex.icon}</div>
+              <div className="exercise-name">{ex.label}</div>
+            </div>
+          ))}
+      </div>
       </div>
 
-      <div>
+      <h3 className="upload-title">Upload Your Video:</h3>
+
+      <div
+        className={`video-dropzone ${dragActive ? "drag-active" : ""}`}
+        onDragEnter={handleDrag}
+        onDragLeave={handleDrag}
+        onDragOver={handleDrag}
+        onDrop={handleDrop}
+        onClick={() => inputRef.current.click()}
+      >
         <input
           type="file"
           accept="video/*"
-          onChange={(e) => setFile(e.target.files[0])}
+          ref={inputRef}
+          onChange={handleChange}
+          style={{ display: "none" }}
         />
+
+        <div className="dropzone-content">
+          <div className="drop-icon">📹</div>
+          <h3>Drag & drop your video here</h3>
+          <p>or click to select a file</p>
+          <p>Supported formats: MP4, MOV, AVI, MKV, WEBM</p>
+          <p>Maximum size: 50MB per file</p>
+        </div>
       </div>
 
-      <button type="submit" disabled={loading}>
+      {file && (
+        <div className="uploaded-video-card">
+          <video
+            src={preview}
+            controls
+            className="uploaded-video-preview"
+          />
+
+          <div className="video-info">
+            <span className="video-name" title={file.name}>
+              {file.name.length > 30
+                ? file.name.slice(0, 30) + "..."
+                : file.name}
+            </span>
+            <span className="video-size">
+              {(file.size / 1024 / 1024).toFixed(2)} MB
+            </span>
+          </div>
+
+          <button
+            type="button"
+            className="remove-video"
+            onClick={removeFile}
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
+      <button
+        className="btn-ai-upload"
+        disabled={loading || !file}
+        onClick={handleUpload}
+      >
         {loading ? "Processing..." : "Assess Technique"}
       </button>
-    </form>
+    </div>
   )
 }

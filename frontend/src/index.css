@@ -2,15 +2,20 @@
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
+  background-color: #F3F3F3;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 a {
@@ -24,15 +29,21 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
+  justify-content: center;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background-color: #F3F3F3;
 }
 
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+}
+
+html, body, #root {
+  height: 100%;
+  background-color: #F3F3F3 !important;
 }
 
 button {
@@ -57,7 +68,7 @@ button:focus-visible {
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
-    background-color: #ffffff;
+    background-color: #F3F3F3;
   }
   a:hover {
     color: #747bff;
@@ -65,4 +76,19 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+@font-face {
+  font-family: 'TT Travels Bold';
+  src: local('TT Travels Bold'), url('./fonts/TTTravels/TTTravels-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'TT Travels Medium';
+  src: local('TT Travels Medium'), url('./fonts/TTTravels/TTTravels-Medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'TT Travels Regular';
+  src: local('TT Travels Regular'), url('./fonts/TTTravels/TTTravels-Regular.ttf') format('truetype');
 }

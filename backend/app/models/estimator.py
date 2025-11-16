@@ -92,9 +92,12 @@ class PushupEvaluator(BaseRuleEvaluator):
         torso_angle = features.get("torso_angle_from_vertical", 90)
         balance_y = features.get("balance_y", 0)
 
-        self._penalize(elbow_angle > 160, "Do not skip elbow bending — go lower.", 15)
+        self._penalize(elbow_angle > 160, "Do not skip elbow bending — go lower.", 10)
+        self._penalize(elbow_angle > 170, "Do not skip elbow bending — go lower.", 15)
         self._penalize(elbow_angle < 60, "Too deep — control your range.", 5)
+        self._penalize(elbow_angle < 70, "Too deep — control your range.", 5)
         self._penalize(abs(torso_angle - 90) > 15, "Keep your body straight — align shoulders, hips, heels.", 10)
+        self._penalize(abs(torso_angle - 90) > 25, "Keep your body straight — align shoulders, hips, heels.", 10)
         self._penalize(abs(balance_y) > 0.1, "Maintain body balance — avoid shifting sideways.", 5)
 
         return self.result()
@@ -157,7 +160,11 @@ class PullupEvaluator(BaseRuleEvaluator):
         # Frame-level penalties
         self._penalize(elbow_angle > 160, "Not pulling up fully — raise your chin above the bar.", 10)
         self._penalize(elbow_angle < 70, "Pulling too high — control the top phase.", 5)
+        self._penalize(elbow_angle > 170, "Not pulling up fully — raise your chin above the bar.", 10)
+        self._penalize(elbow_angle < 60, "Pulling too high — control the top phase.", 5)
+        self._penalize(elbow_angle < 50, "Pulling too high — control the top phase.", 10)
         self._penalize(abs(torso_angle - 90) > 20, "Keep your body straight — avoid swinging.", 5)
+        self._penalize(abs(torso_angle - 90) > 30, "Keep your body straight — avoid swinging.", 5)
         self._penalize(balance_y > 0.1, "Do not lean sideways — maintain stability.", 5)
 
         return self.result()
@@ -195,6 +202,8 @@ class SitupEvaluator(BaseRuleEvaluator):
 
         self._penalize(torso_angle < 60, "Not lifting torso enough — go higher.", 10)
         self._penalize(torso_angle > 120, "Too high — avoid hyperextension.", 5)
+        self._penalize(torso_angle < 50, "Not lifting torso enough — go higher.", 10)
+        self._penalize(torso_angle > 130, "Too high — avoid hyperextension.", 5)
         self._penalize(hip_angle < 40, "Hips are too bent — maintain proper leg angle.", 5)
 
         return self.result()
@@ -229,6 +238,8 @@ class JumpingJackEvaluator(BaseRuleEvaluator):
 
         self._penalize(arm_angle < 70, "Raise arms higher during the jump.", 5)
         self._penalize(leg_spread < 0.5, "Spread legs wider for full range.", 5)
+        self._penalize(arm_angle < 60, "Raise arms higher during the jump.", 5)
+        self._penalize(leg_spread < 0.4, "Spread legs wider for full range.", 5)
 
         return self.result()
 

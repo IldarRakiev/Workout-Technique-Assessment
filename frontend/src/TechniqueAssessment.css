@@ -1,0 +1,541 @@
+
+.basic-page {
+    width: 100%;
+    min-height: 140vh;
+
+    padding-top: 70px;
+}
+
+.technique-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: calc(100vh - 150px);
+  justify-content: flex-start;
+}
+
+/* HEADER */
+.technique-header {
+  text-align: center;
+  margin-bottom: 40px;
+  width: 100%;
+}
+
+.technique-title {
+  font-family: 'TT Travels', sans-serif;
+  font-weight: 700;
+  font-size: 42px;
+  margin-bottom: 26px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.technique-icon {
+  font-size: 48px;
+  animation: robotPulse 3s ease-in-out infinite;
+}
+
+.technique-subtitle {
+  font-family: 'TT Travels Regular', sans-serif;
+  font-size: 18px;
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* UPLOAD CARD */
+.upload-card {
+  width: 100%;
+  max-width: 800px;
+  z-index: 2;
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  margin-bottom: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.upload-title {
+  font-family: 'TT Travels';
+  font-weight: 700;
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.exercise-select {
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.exercise-select select {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.exercise-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.exercise-card {
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 16px;
+  padding: 15px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.exercise-card:hover {
+  transform: translateY(-3px);
+  border-color: #667eea;
+  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.25);
+}
+
+.exercise-card.selected {
+  border-color: #764ba2;
+  background: linear-gradient(135deg, #e8e8ff, #ffffff);
+  box-shadow: 0 12px 30px rgba(118, 75, 162, 0.25);
+}
+
+.exercise-icon {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+.exercise-name {
+  font-family: 'TT Travels Medium';
+  font-size: 16px;
+  color: #333;
+}
+
+/* DROPZONE */
+.video-dropzone {
+  border: 3px dashed #e0e0e0;
+  background: linear-gradient(145deg, #f8f9ff, #ffffff);
+  padding: 60px 40px;
+  border-radius: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 30px;
+  overflow: hidden;
+}
+
+.video-dropzone:hover {
+  border-color: #667eea;
+  background: linear-gradient(145deg, #eef1ff, #ffffff);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+}
+
+.video-dropzone.drag-active {
+  border-color: #667eea;
+  background: linear-gradient(145deg, #e8f2ff, #f5f8ff);
+  transform: scale(1.02);
+  box-shadow: 0 12px 30px rgba(102, 126, 234, 0.25);
+}
+
+.video-dropzone:hover::before {
+  left: 100%;
+}
+
+.video-dropzone::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+  transition: left 0.6s;
+}
+
+.dropzone-content h3 {
+  font-family: 'TT Travels', sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  color: #333;
+  margin: 20px 0 10px 0;
+}
+
+.dropzone-content p {
+  font-family: 'TT Travels Regular', sans-serif;
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+/* Uploaded file preview container */
+.video-preview-box {
+  margin-top: 30px;
+  width: 100%;
+}
+
+.video-preview-title {
+  font-family: 'TT Travels Bold', sans-serif;
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: #333;
+  text-align: center;
+}
+
+.uploaded-video-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 16px;
+  width: 50%;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  animation: fadeInUp 0.35s ease-out;
+}
+
+.uploaded-video-card:hover {
+  transform: translateY(-2px);
+  border-color: #667eea;
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.25);
+}
+
+.uploaded-video-preview {
+  width: 10%;
+  border-radius: 12px;
+}
+
+.video-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.video-name {
+  font-family: 'TT Travels Regular', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.video-size {
+  font-family: 'TT Travels Regular', sans-serif;
+  font-size: 12px;
+  color: #888;
+}
+
+.remove-video {
+  background: #ff4757;
+  color: white;
+  border: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.remove-video:hover {
+  background: #ff3742;
+  transform: scale(1.1);
+}
+
+.drop-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Assess button */
+.btn-ai-upload {
+  margin-top: 40px;
+  font-family: 'TT Travels Medium', sans-serif;
+  font-size: 18px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 18px 45px;
+  border-radius: 64px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-width: 260px;
+  position: relative;
+  overflow: hidden;
+  justify-self: center;
+}
+
+.btn-ai-upload:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(102,126,234,0.6);
+  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+}
+
+.btn-ai-upload:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-ai-upload::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,0.2),
+    transparent
+  );
+  transition: left 0.6s;
+}
+
+.btn-ai-upload:hover:not(:disabled)::before {
+  left: 100%;
+}
+
+/* Loading spinner */
+.loading-spinner {
+  animation: spin 0.9s linear infinite;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9998;
+}
+
+.modal-content {
+  z-index: 9999;
+  animation: popup 0.25s ease-out;
+}
+
+@keyframes popup {
+  from {
+    transform: translateY(15px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Result card */
+.result-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+/* сама карточка результата */
+.result-modal {
+  background: #fff;
+  width: 480px;
+  max-height: 90vh;
+  padding: 30px;
+  border-radius: 18px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
+  animation: fadeInScale 0.25s ease;
+  position: relative;
+  overflow-y: auto;
+}
+
+/* кнопка закрытия */
+.result-close {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* заголовок результата */
+.result-title {
+  font-family: 'TT Travels Bold', sans-serif;
+  font-size: 24px;
+  margin-bottom: 40px;
+}
+
+/* ————————————————
+   CIRCLE PROGRESS
+——————————————— */
+
+.circle-wrapper {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  margin: 0 auto 25px;
+}
+
+.progress-ring circle {
+  fill: none;
+  stroke-width: 16px;
+  stroke-linecap: round;
+}
+
+.ring-bg {
+  stroke: #ddd;
+}
+
+.ring-progress {
+  stroke: #3f8cff;
+  stroke-dasharray: 440; /* length of circumference */
+  stroke-dashoffset: 440;
+  transition: stroke-dashoffset 1.4s ease;
+}
+
+.circle-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.result-subtitle {
+  font-family: 'TT Travels Bold', sans-serif;
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+.result-section {
+  font-family: 'TT Travels', sans-serif;
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+
+/* ————————————————
+   SUB SCORES
+——————————————— */
+.result-sub-scores {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+
+.sub-score {
+  background: #f5f7ff;
+  padding: 10px 16px;
+  border-radius: 12px;
+  text-align: center;
+  min-width: 130px;
+}
+
+.sub-score span {
+  display: block;
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.sub-score strong {
+  font-size: 20px;
+}
+
+.feedback-section {
+  margin-left: 15px;  
+  font-family: 'TT Travels', sans-serif;
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+
+/* анимация появления */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .video-dropzone {
+    padding: 40px 20px;
+  }
+
+  .sub-scores {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .btn-assess {
+    width: 100%;
+  }
+}
