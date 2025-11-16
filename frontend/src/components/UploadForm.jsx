@@ -1,4 +1,4 @@
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { assessVideo } from "../api/assessmentApi"
 import "../TechniqueAssessment.css"
 
@@ -8,6 +8,16 @@ export default function UploadForm({ onResult }) {
   const [preview, setPreview] = useState(null)
   const [dragActive, setDragActive] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [uploadedFiles, setUploadedFiles] = useState([])
+  const [previewVideo, setPreviewVideo] = useState(null)
+
+  const openVideo = (file) => {
+    setPreviewVideo(URL.createObjectURL(file))
+  }
+
+  const closeVideo = () => {
+    setPreviewVideo(null)
+  }
 
   const inputRef = useRef()
 
@@ -64,6 +74,40 @@ export default function UploadForm({ onResult }) {
     setPreview(null)
     if (inputRef.current) inputRef.current.value = ""
   }
+
+  const [modalPos, setModalPos] = useState({ x: 200, y: 100 });
+
+  const dragOffset = useRef({ x: 0, y: 0 });
+  const isDragging = useRef(false);
+
+  const startDrag = (e) => {
+    isDragging.current = true;
+    dragOffset.current = {
+      x: e.clientX - modalPos.x,
+      y: e.clientY - modalPos.y
+    };
+  };
+
+  const onDrag = (e) => {
+    if (!isDragging.current) return;
+    setModalPos({
+      x: e.clientX - dragOffset.current.x,
+      y: e.clientY - dragOffset.current.y
+    });
+  };
+
+  const stopDrag = () => {
+    isDragging.current = false;
+  };
+
+  useEffect(() => {
+    window.addEventListener("mousemove", onDrag);
+    window.addEventListener("mouseup", stopDrag);
+    return () => {
+      window.removeEventListener("mousemove", onDrag);
+      window.removeEventListener("mouseup", stopDrag);
+    };
+  }, []);
 
   const handleUpload = async (e) => {
     e.preventDefault()
@@ -127,11 +171,12 @@ export default function UploadForm({ onResult }) {
 
       {file && (
         <div className="uploaded-video-card">
-          <video
-            src={preview}
-            controls
-            className="uploaded-video-preview"
-          />
+          <div
+            className="video-emoji-preview"
+            onClick={() => openVideo(file)}
+          >
+            🎥
+          </div>
 
           <div className="video-info">
             <span className="video-name" title={file.name}>
@@ -151,6 +196,24 @@ export default function UploadForm({ onResult }) {
           >
             ✕
           </button>
+        </div>
+      )}
+
+      {previewVideo && (
+        <div className="video-modal">
+          <div className="video-modal-content" 
+              onMouseDown={startDrag}
+              onMouseUp={stopDrag}
+              onMouseMove={onDrag}
+              onClick={(e) => e.stopPropagation()}
+              style={{ left: modalPos.x, top: modalPos.y }} >  
+            <button className="modal-close" 
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      closeVideo()
+                    }}>✕</button>
+            <video src={previewVideo} className="video-preview" controls autoPlay onClick={(e) => e.preventDefault()}/>
+          </div>
         </div>
       )}
 

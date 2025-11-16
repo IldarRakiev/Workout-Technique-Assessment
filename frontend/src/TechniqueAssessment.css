@@ -227,6 +227,79 @@
   border-radius: 12px;
 }
 
+.video-emoji-preview {
+  font-size: 24px;
+  cursor: pointer;
+  background: #ffffff;
+  width: 30px;
+  height: 30px;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+}
+
+.video-emoji-preview:hover {
+  transform: scale(1.1);
+  background: #ffffff;
+}
+
+/* Modal */
+.video-modal {
+  position: fixed;
+  top: 250px;
+  left: 100px;
+  width: 30%;
+  height: 30%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  cursor: default;
+}
+
+.video-modal-content {
+  background: #F3F3F3;
+  padding: 2px;
+  border-radius: 12px;
+  max-width: 80%;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  position: relative;
+}
+
+.video-modal video {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.video-preview {
+  width: 480px;
+  max-height: 80vh;
+  border-radius: 10px;
+}
+
+.modal-close {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  background: rgba(0, 0, 0, 0.0);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close:hover {
+  background: #333;
+}
+
 .video-info {
   flex: 1;
   min-width: 0;
@@ -390,9 +463,9 @@
 /* сама карточка результата */
 .result-modal {
   background: #fff;
-  width: 480px;
+  width: 520px;
   max-height: 90vh;
-  padding: 30px;
+  padding: 40px;
   border-radius: 18px;
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
   animation: fadeInScale 0.25s ease;
@@ -447,11 +520,12 @@
 }
 
 .circle-center {
+  font-family: 'TT Travels', sans-serif;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 700;
 }
 
