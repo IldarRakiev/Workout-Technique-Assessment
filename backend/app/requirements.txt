@@ -12,3 +12,7 @@ numpy
 scipy
 pandas
 
+# ML libraries
+joblib
+tensorflow
+scikit-learn
