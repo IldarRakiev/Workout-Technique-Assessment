@@ -36,18 +36,23 @@ These serve as inputs for subsequent analysis, reducing data dimensionality whil
 2. Detect and track human body poses;  
 3. Extract pose landmarks using MediaPipe;  
 4. Compute engineered features (angles, distances, dynamics);  
-5. Pass features into a classification model;  
+5. Pass features into a classification model (rule-based model + autoencoder);  
 6. Provide visual and textual feedback.
 
 ### 3.3 Feature Representation  
 - Joint angles (e.g., hip–knee–ankle, shoulder–elbow–wrist)  
 - Spatial relationships (normalized distances, ratios)  
 - Temporal dynamics (angle variation and velocity across frames)
+- Frame details and information about peak phases
 
 ### 3.4 Model  
-We employ a **Support Vector Machine (SVM)** with an RBF kernel.  
-This model classifies exercise executions as “correct” or “incorrect”, and can be extended to multi-class error recognition (e.g., “knees inward”, “back not straight”).  
-For larger datasets, deep learning alternatives (LSTM, TCN, Transformers) may be considered.
+We employ an **autoencoder** architecture that takes a set of exercise feature vectors and evaluate anomalies based on recovery errors. That is, autoencoder tries to understand the "normal" examples of exercises, so that later it can detect some irrelevant features data. 
+
+**Encoder** compresses the source data into a small vector (8 features) — a "bottleneck" of the network, where it is forced to present all information compactly in vector. The second step is when the decoder restores the vector to its original size.
+
+- Here we have the loss as **MSE (RMS error)** between input and output as the key metric to understand whether the features are valid.
+
+The idea of the autoencoder is to learn how to "reproduce normal data." If the data is **abnormal**, the autoencoder will not recover it well, and the MSE will be **high**.
 
 ### 3.5 Evaluation Metrics  
 - **Accuracy:** Overall correctness  
@@ -82,20 +87,42 @@ Each exercise includes multiple repetitions under varying conditions and is segm
 
 ## 5. Installation & Usage  
 
-### Requirements  
+### Requirements
 - Python 3.9+  
 - pip, virtualenv  
 
-### Setup  
+### Local Setup & Run Instructions
+
+#### 1. Clone the repository
+
 ```bash
-git clone https://github.com/ConnectLab/VisionWorkoutAssessment.git
-cd VisionWorkoutAssessment
-python -m venv venv
+git clone https://github.com/IldarRakiev/Workout-Technique-Assessment.git
+cd Workout-Technique-Assessment
 ```
+
+#### 2. Backend Setup (FastAPI)
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate     # or .\venv\Scripts\activate on Windows
+docker-compose build
+docker-compose up -d
+```
+
+Server will be accessible at **port 8000**.
+
+### 3. Frontend Setup (React + Tailwind)
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Frontend will be available at **port 5173**.
 
 ### Example Usage
 
-**Upload a video** or **connect a webcam** stream via the frontend.
+**Upload a video** via the frontend.
 The model will:
 
 - Extract **pose keypoints** using MediaPipe
